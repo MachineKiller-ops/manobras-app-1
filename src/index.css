@@ -1,13 +1,11 @@
-.diagrama {
-  /*   background-image: '.img/Atalaia.bmp';
- */
-  background-repeat: no-repeat;
-  border-radius: '10px';
-  /*   width: '1000px';
- */
-  margin: 'auto';
-  /*   position: 'relative';
-      height: '750px';
- */
-  object-fit: contain;
+h1 {
+  color: aliceblue;
+}
+
+.disjuntor {
+  width: 25px;
+  height: 25px;
+  background: blue;
+  position: absolute;
+  border: 2px solid black;
 }
