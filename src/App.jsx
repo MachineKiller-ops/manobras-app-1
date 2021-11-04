@@ -11,6 +11,8 @@ import {
 import Main from './Pages/Main';
 import Simula from './Pages/Simula';
 import ConfiguraSE from './Pages/ConfiguraSE';
+import Nav from './Pages/Nav';
+
 
 const App = () =>{
 
@@ -20,20 +22,8 @@ const App = () =>{
 
         <Router>
 
-        <div style={{
-                background: 'green',
-                color: 'white',
-                textAlign: 'center',
-                justifyContent: 'center',
-                alignContent: 'center',
-                fontSize: '1.5rem',
-                fontWeight: 'bold'
-            }} className='App'>
-            <h1>Cemig Distribuição</h1>
-
-            <Link to='/'><p>Home</p></Link>
-            <Link to='/simula'>Simula</Link>
-            <Link to='/configurase'><p>Configura SE</p></Link>
+        <div>
+            <Nav />
 
 {/*             Implementar aqui um form com options para escolher a subestação
  */}

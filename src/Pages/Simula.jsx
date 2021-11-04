@@ -6,11 +6,13 @@ function Disjuntor (props) {
     return (
       <button 
         className="disjuntor" 
-       style={{
-        position: 'absolute',
-        left: `${props.x}px`, // cria figura do disjuntor na posição passada pela props
-        top: `${props.y}px`,
-       }}
+        style={{
+            position: 'absolute',
+            left: `${props.x}px`, // cria figura do disjuntor na posição passada pela props
+            top: `${props.y}px`,
+            backgroundColor: props.closed ? 'red' : 'green' // a cor é definida pelo estado do disjuntor
+        }}
+        onClick={()=>props.onClick()}
       >
           {props.index}
       </button>
@@ -18,26 +20,30 @@ function Disjuntor (props) {
 }
 
 class Diagrama extends React.Component {
+
   
-    renderDisjuntor(x,y,index) {
+    renderDisjuntor(x,y,closed,index) {
         
       return <Disjuntor 
                 x={x} // envia coordenadas x e y para renderizar disjuntor
                 y={y}
+                closed={closed}
                 index={index}
+                onClick={()=>this.props.onClick(index)}
               />;
     }
   
     render() {
         
         const mapa = JSON.parse(this.props.v); // (des)converte de JSON para objeto
+        console.log(this.props.v);
         
         return(
             
             mapa.map((dis,index)=>{ // cria loop em que se lê todos os disjuntores chamando a função de renderização para cada um deles
                 return (
                     <div key={index}>
-                        {this.renderDisjuntor(dis[0],dis[1],index)}
+                        {this.renderDisjuntor(dis[0],dis[1],dis[2],index)}
                     </div>
                     
                 );
@@ -48,7 +54,7 @@ class Diagrama extends React.Component {
   }
 
 
-export default class Simula extends Component {
+export default class Simula extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,17 +65,28 @@ export default class Simula extends Component {
         };
     
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
-      }
-      handleDropdownChange(e) {
-        this.setState({ selectValue: e.target.value });
-      }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(i) {
+        console.log(this.state.mapa[i][0]+','+this.state.mapa[i][1]);
+        this.setState({ x : 400});
+        // mudar o estado do disjuntor 'closed' de 0 para 1 vice-versa
+        console.log(this.state.x);
+    }
+
+    handleDropdownChange(e) {
+       this.setState({ selectValue: e.target.value });
+    }
+
+  
 
     render() {
 
         const mapa = this.state.mapa;
 
-        const word = mapa[1][1];
-        console.log(word); // output 'testing'
+        //const word = mapa[1][1];
+        //console.log(word); // output 'testing'
         //const data = JSON.parse(myJson)
         return (
             <div
@@ -82,6 +99,7 @@ export default class Simula extends Component {
                 alignItems: 'center',
                 color: 'black',
                 fontWeight: 'bold'
+                
             }}
         >
             
@@ -101,6 +119,7 @@ export default class Simula extends Component {
                     <p>{mapa[1][1]}</p>
                     <Diagrama 
                         v={JSON.stringify(mapa)} //Necessário conversão para JSON pois objetos não podem ser passados em props
+                        onClick={i=>{this.handleClick(i)}}
                     />
 
                 </div>
