@@ -36,7 +36,7 @@ class Diagrama extends React.Component {
     render() {
         
         const mapa = JSON.parse(this.props.v); // (des)converte de JSON para objeto
-        console.log(this.props.v);
+        //console.log(this.props.v);
         
         return(
             
@@ -58,10 +58,11 @@ export default class Simula extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          selectValue: "Betim4",
+          /* selectValue: "Betim4",
           x: 500,
           
-          mapa: [...data[0].mapa]
+          mapa: [...data[0].mapa] */
+          conf: data.default.find(conf => conf.nome === this.props.match.params.id)
         };
     
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
@@ -69,10 +70,10 @@ export default class Simula extends React.Component {
     }
 
     handleClick(i) {
-        console.log(this.state.mapa[i][0]+','+this.state.mapa[i][1]);
-        this.setState({ x : 400});
+        console.log(this.state.conf.mapa[i][0]+','+this.state.conf.mapa[i][1]);
+        //this.setState({ x : 400});
         // mudar o estado do disjuntor 'closed' de 0 para 1 vice-versa
-        console.log(this.state.x);
+        //console.log(this.state.x);
     }
 
     handleDropdownChange(e) {
@@ -83,10 +84,13 @@ export default class Simula extends React.Component {
 
     render() {
 
-        const mapa = this.state.mapa;
+        //const mapa = this.state.mapa;
+        var configuracao  = data.default.find(conf => conf.nome === this.props.match.params.id); // separa os dados de configuração da SE
+        console.log(this.state.conf.mapa[1][1]);
+        //this.setState({mapa: configuracao.mapa});
 
         //const word = mapa[1][1];
-        //console.log(word); // output 'testing'
+        //console.log(this.props.match.params.id); // output 'testing'
         //const data = JSON.parse(myJson)
         return (
             <div
@@ -99,7 +103,7 @@ export default class Simula extends React.Component {
                 alignItems: 'center',
                 color: 'black',
                 fontWeight: 'bold'
-                
+
             }}
         >
             
@@ -108,7 +112,7 @@ export default class Simula extends React.Component {
             
                 <div style={{
                     backgroundImage: `url(${process.env.PUBLIC_URL
-                        + "/img/" + this.state.selectValue + ".png"})`, //Acessa imagem na pasta public
+                        + "/img/" + this.props.match.params.id + ".png"})`, //Acessa imagem na pasta public
                     backgroundRepeat: "no-repeat",
                     backgroundPositionX: "left",
                     height: '300%',
@@ -116,9 +120,9 @@ export default class Simula extends React.Component {
                     position: 'relative'
                 }}>
                     <h1>Hello</h1>
-                    <p>{mapa[1][1]}</p>
+                    <p>{this.state.conf.mapa[1][1]}</p>
                     <Diagrama 
-                        v={JSON.stringify(mapa)} //Necessário conversão para JSON pois objetos não podem ser passados em props
+                        v={JSON.stringify(this.state.conf.mapa)} //Necessário conversão para JSON pois objetos não podem ser passados em props
                         onClick={i=>{this.handleClick(i)}}
                     />
 

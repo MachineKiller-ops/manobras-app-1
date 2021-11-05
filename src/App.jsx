@@ -12,6 +12,7 @@ import Main from './Pages/Main';
 import Simula from './Pages/Simula';
 import ConfiguraSE from './Pages/ConfiguraSE';
 import Nav from './Pages/Nav';
+import Lista from './Pages/Lista';
 
 
 const App = () =>{
@@ -31,7 +32,8 @@ const App = () =>{
             
             <Switch>
                 <Route path="/" exact component={Main} />
-                <Route path="/simula" component={Simula} />
+                <Route path="/simula" exact component={Lista} />
+                <Route path="/simula/:id" component={Simula} />
                 <Route path="/configurase" component={ConfiguraSE} />
             </Switch>
 
