@@ -62,7 +62,7 @@ export default class Simula extends React.Component {
           x: 500,
           
           mapa: [...data[0].mapa] */
-          conf: data.default.find(conf => conf.nome === this.props.match.params.id)
+          conf: data.default.find(conf => conf.nome === this.props.match.params.id) // separa os dados de configuração da SE
         };
     
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
@@ -83,59 +83,21 @@ export default class Simula extends React.Component {
   
 
     render() {
-
-        //const mapa = this.state.mapa;
-        var configuracao  = data.default.find(conf => conf.nome === this.props.match.params.id); // separa os dados de configuração da SE
         console.log(this.state.conf.mapa[1][1]);
-        //this.setState({mapa: configuracao.mapa});
-
-        //const word = mapa[1][1];
-        //console.log(this.props.match.params.id); // output 'testing'
-        //const data = JSON.parse(myJson)
         return (
-            <div
-                style={{
-                height: '100vh',
-                width: '100%',
-                background: 'lightyellow',
-                /* display: 'flex', */
-                justifyContent: 'center',
-                alignItems: 'center',
-                color: 'black',
-                fontWeight: 'bold'
-
-            }}
-        >
-            
-
-            <p>Simula Subestação</p>
-            
-                <div style={{
-                    backgroundImage: `url(${process.env.PUBLIC_URL
-                        + "/img/" + this.props.match.params.id + ".png"})`, //Acessa imagem na pasta public
-                    backgroundRepeat: "no-repeat",
-                    backgroundPositionX: "left",
-                    height: '300%',
-                    alignSelf: 'center',
-                    position: 'relative'
-                }}>
-                    <h1>Hello</h1>
-                    <p>{this.state.conf.mapa[1][1]}</p>
-                    <Diagrama 
-                        v={JSON.stringify(this.state.conf.mapa)} //Necessário conversão para JSON pois objetos não podem ser passados em props
-                        onClick={i=>{this.handleClick(i)}}
-                    />
-
+                    
+                <div className="image-container">
+                    <div className="image-inner-container">
+                        <img src={process.env.PUBLIC_URL
+                            + "/img/" + this.props.match.params.id + ".png"} alt="" />
+                        <Diagrama 
+                            v={JSON.stringify(this.state.conf.mapa)} //Necessário conversão para JSON pois objetos não podem ser passados em props
+                            onClick={i=>{this.handleClick(i)}}
+                        />
+                    </div>
                 </div>
 
-           
-            
-            
-     
-            <p>Subtitulo aqui</p>
-            <p>Cemig Distribuição</p>
-                
-            </div>
+
         )
     }
 }
