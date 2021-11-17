@@ -70,10 +70,13 @@ export default class Simula extends React.Component {
     }
 
     handleClick(i) {
-        console.log(this.state.conf.mapa[i][0]+','+this.state.conf.mapa[i][1]);
-        //this.setState({ x : 400});
-        // mudar o estado do disjuntor 'closed' de 0 para 1 vice-versa
-        //console.log(this.state.x);
+        let conf = {...this.state.conf}; // copia conf
+        conf.mapa[i][2]=conf.mapa[i][2] ? 0 : 1; // muda o estado do disjuntor
+        console.log('estado: '+conf.mapa[i][2]); 
+        this.setState({
+            conf: conf // atualiza conf
+          });
+
     }
 
     handleDropdownChange(e) {
