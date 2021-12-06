@@ -14,10 +14,10 @@ const Nav = () => {
                     <li>Home</li>
                 </Link>
                 <Link style={navStyle} to="/simula">
-                    <li>Simula</li>
+                    <li>Simular</li>
                 </Link>
                 <Link style={navStyle} to="/configurase">
-                    <li>Configura</li>
+                    <li>Configurar</li>
                 </Link>
             </ul>
         </nav>

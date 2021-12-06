@@ -1,20 +1,122 @@
-const ConfiguraSE = () => {
+import '../index.css';
+import React, { Component } from 'react';
+import * as data from './data.json';
+
+function Disjuntor (props) {
     return (
-        <div
-            style={{
-                height: '100vh',
-                width: '100%',
-                background: 'lightblue',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: '1.5rem'
-            }}
-        >
-            
-            Configura subestação
-        </div>
+      <button 
+        className="disjuntor" 
+        style={{
+            position: 'absolute',
+            left: `${props.x}px`, // cria figura do disjuntor na posição passada pela props
+            top: `${props.y}px`,
+            backgroundColor: props.closed ? 'red' : 'green' // a cor é definida pelo estado do disjuntor
+        }}
+        onClick={()=>props.onClick()}
+      >
+          {props.index}
+      </button>
     );
 }
 
-export default ConfiguraSE;
+class Diagrama extends React.Component {
+
+  
+    renderDisjuntor(x,y,closed,index) {
+        
+      return <Disjuntor 
+                x={x} // envia coordenadas x e y para renderizar disjuntor
+                y={y}
+                closed={closed}
+                index={index}
+                onClick={()=>this.props.onClick(index)}
+              />;
+    }
+  
+    render() {
+        
+        const mapa = JSON.parse(this.props.v); // (des)converte de JSON para objeto
+        //console.log(this.props.v);
+        
+        return(
+            
+            mapa.map((dis,index)=>{ // cria loop em que se lê todos os disjuntores chamando a função de renderização para cada um deles
+                return (
+                    <div key={index}>
+                        {this.renderDisjuntor(dis[0],dis[1],dis[2],index)}
+                    </div>
+                    
+                );
+            })
+        );
+        
+    }
+  }
+
+  function GravaConf(props) {
+    /* function handleSubmit(e) {
+      e.preventDefault();
+      alert('Configuração salva com sucesso!');
+    } */
+  
+    return (
+      <form onSubmit={props.onSubmitData}>
+        <button type="submit">Gravar configuração</button>
+      </form>
+    );
+  }
+
+
+export default class ConfiguraSE extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          conf: data.default.find(conf => conf.nome === this.props.match.params.id) // separa os dados de configuração da SE
+        };
+    
+        this.handleClick = this.handleClick.bind(this);
+        this.saveConf = this.saveConf.bind(this);
+    }
+
+    handleClick(i) {
+        let conf = {...this.state.conf}; // copia conf
+        conf.mapa[i][2]=conf.mapa[i][2] ? 0 : 1; // muda o estado do disjuntor
+        console.log('estado: '+conf.mapa[i][2]); 
+        this.setState({
+            conf: conf // atualiza conf
+          });
+
+    }
+
+    saveConf(e){
+        e.preventDefault();
+        alert('Configuração salva com sucesso!');
+        console.log(data);
+    }
+    render() {
+        console.log(this.state.conf.mapa[1][1]);
+        return (
+            <div>
+                <h3>CONFIGURAR SUBESTAÇÃO</h3>
+                <div className="image-container">
+                    <div className="image-inner-container">
+                        <img src={process.env.PUBLIC_URL
+                            + "/img/" + this.props.match.params.id + ".png"} alt="" />
+                        <Diagrama 
+                            v={JSON.stringify(this.state.conf.mapa)} //Necessário conversão para JSON pois objetos não podem ser passados em props
+                            onClick={i=>{this.handleClick(i)}}
+                        />
+                        <GravaConf 
+                            onSubmitData={e=>{this.saveConf(e)}}
+                        />
+                    </div>
+                </div>
+            </div>
+                    
+
+
+        )
+    }
+}
+
+
